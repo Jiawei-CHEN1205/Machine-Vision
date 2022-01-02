@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="20.11.1.2">
+<procedure name="main">
+<interface/>
+<body>
+<l>read_image (Image, 'D:/machine_vision_homework/hw6_image/homework.png') </l>
+<l>rgb1_to_gray (Image, GrayImage)</l>
+<c>*转换为灰度图 </c>
+<l>gauss_filter (GrayImage, ImageGauss, 3) </l>
+<l>roberts (ImageGauss, ImageRoberts, 'gradient_sum') </l>
+<c>*robert算子 边缘提取 </c>
+<l>threshold (ImageRoberts, Region, 0, 90)</l>
+<l>opening_rectangle1 (Region, RegionOpening, 5, 5)</l>
+<c>*先腐蚀再膨胀,开运算,或者下面这两句</c>
+<l>*erosion_circle (Region, RegionErosion, 8)</l>
+<l>*dilation_circle (RegionErosion, RegionDilation, 8)</l>
+<c>*阈值化图像分割Image是输入图像 </c>
+<c>*Region是分割后的结果 </c>
+<c>*MinGray 和MaxGray是输入的控制参数，分割的最小灰度值与最大灰度</c>
+<c>*此处的阈值最大值，后面的几张图，受图片中残缺圆形的影响，修改阈值从80改为92或95</c>
+<l>connection (RegionOpening, ConnectedRegions)</l>
+<c>*计算区域中的连通部分 </c>
+<l>select_shape (ConnectedRegions, SelectedRegions, 'area', 'and', 100, 99999) </l>
+<l>area_center (SelectedRegions, Area, Row, Column) </l>
+<c>*计算圆心的位置输出（Row，Column），和面积</c>
+<l>AreaDiameter:=2*sqrt(Area/3.1415926) </l>
+<c>*计算圆的直径</c>
+<c></c>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+</hdevelop>
